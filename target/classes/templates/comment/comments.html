@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Users</title>
+  <!--<link th:href="@{/styles/main.css}" rel="stylesheet" />-->
+  <!-- <link th:href="@{/webjars/bootstraps/css/bootstraps.min.css}" rel="stylesheet" />-->
+  <!-- CSS only -->
+  <script src="/webjars/jquery/jquery.min.js"></script>
+  <script src="/webjars/momentjs/min/moment.min.js"></script>
+  <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/webjars/bootstrap-daterangepicker/js/bootstrap-daterangepicker.js"></script>
+
+  <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/webjars/bootstrap-daterangepicker/css/bootstrap-daterangepicker.css" rel="stylesheet">
+
+  <link href="styles/header.css" rel="stylesheet">
+  <link href="styles/pagination.css" rel="stylesheet">
+  <link href="/styles/buttons.comments.css" rel="stylesheet">
+
+</head>
+<body>
+<div class="container-fluid text-center">
+
+  <div class="tab">
+    <div class="tablinks active">
+      <a th:href="@{/comments}">Comments</a>
+    </div>
+    <div class="tablinks" sec:authorize="hasAnyAuthority('ROOT', 'ADMIN')">
+      <a th:href="@{/comment-topics}">Comment Topics</a>
+    </div>
+    <div class="tablinks" sec:authorize="hasAnyAuthority('ROOT')">
+      <a th:href="@{/locations}">Locations</a>
+    </div>
+    <div class="tablinks" sec:authorize="hasAnyAuthority('ROOT', 'ADMIN')">
+      <a th:href="@{/users}">Users</a>
+    </div>
+    <div class="tablinks" sec:authorize="hasAnyAuthority('ROOT', 'ADMIN')">
+      <a th:href="@{/new-user}">New User</a>
+    </div>
+    <div class="tablinks">
+      <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign out"/>
+      </form>
+    </div>
+  </div>
+
+<!--  <div> <h2>Comments</h2> </div>
+  <div class="m-2">
+    <a class="h3" th:href="@{/users}">Users</a>
+  </div>-->
+
+  <div class="datepickerbutton">
+    <label for="comment_date" data-th-text="#{comment.page.date_picker}"></label>
+    <input type="text" name="daterange" id="comment_date" th:value="${fromDate} + ' - ' + ${endDate}" />
+  </div>
+
+  <div class="buttonexcel">
+  <a th:href="@{/download-comments(fromDate=${fromDate}, endDate=${endDate})}"><span>Download Comments</span></a>
+  </div>
+
+
+  <div>
+    <table class="table table-bordered">
+      <thead class="thead-dark">
+      <tr>
+        <th>ID</th>
+        <th>Comments</th>
+        <th>Date</th>
+        <th>Name</th>
+        <th>Last Name</th>
+        <th>Comments Topic</th>
+        <th>Location</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <th:block th:each="comment, iStat : ${commentPage.content}"
+                th:style="${iStat.odd}? 'font-weight: bold;'"
+                th:alt-title="${iStat.even}? 'even' : 'odd'">
+        <tr>
+          <td>[[${comment.id}]]</td>
+          <td>[[${comment.comment}]]</td>
+          <td>[[${comment.date}]]</td>
+          <td>[[${comment.firstName}]]</td>
+          <td>[[${comment.lastName}]]</td>
+          <td>[[${comment.commentTopic?.name}]]</td>
+          <td>[[${comment.location?.name}]]</td>
+        </tr>
+      </th:block>
+      </tbody>
+    </table>
+
+    <div class="pagination">
+      <div th:if="${commentPage.totalPages > 0}"
+           th:each="pageNumber : ${pageNumbers}">
+        <a th:href="@{/comments(fromDate=${fromDate}, endDate=${endDate}, size=${commentPage.size}, page=${pageNumber})}"
+           th:text=${pageNumber}
+           th:class="${pageNumber==commentPage.number + 1} ? active"></a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script th:inline="javascript">
+  $(function() {
+    $('input[name="daterange"]').daterangepicker({
+      opens: 'left'
+    }, function(start, end, label) {
+      //console.log("A new date selection was made: " + start.format('MM/DD/yyyy') + ' to ' + end.format('MM/DD/yyyy'));
+      window.location.href = "/comments?fromDate=" + start.format('MM/DD/yyyy') + "&endDate=" + end.format('MM/DD/yyyy');
+    });
+  });
+</script>
+</body>
+</html>

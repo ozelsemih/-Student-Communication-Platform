@@ -1,0 +1,33 @@
+.pagination {
+    overflow: hidden;
+    border: 1px solid #003d7f;
+    background-color: #003d7f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.pagination div {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+}
+
+.pagination div a {
+    color: #000000;
+    text-decoration: none;
+    background-color: transparent;
+}
+
+.pagination div:hover {
+    background-color: #ddd;
+}
+
+.pagination div.active {
+    background-color: #ffffff;
+}

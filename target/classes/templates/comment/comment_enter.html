@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="styles/main.css"/>
+    <link rel="stylesheet" href="styles/comment_enter.css"/>
+    <title>SCP</title>
+</head>
+<body>
+
+<form th:action="@{/comment-save}" method="post" th:object="${comment}"
+      style="max-width: 500px; margin: 0 auto;">
+
+
+    <div class="contanier">
+
+        <div class="form">
+            <div class="baslik">
+                <h1>
+                    <img src="images/okanlogoing.png" width="170px" height="170px"/>
+                </h1>
+            </div>
+
+            <div class="admintusu">
+                <a th:href="@{/login}"><img src="../../images/settings.png"></a>
+            </div>
+
+
+            <div class="isim">
+
+               <label for="name">First Name:</label>
+
+                <input type="text" id="name" autocomplete="off" th:field="*{firstName}"/>
+
+                <div class="soyisim">
+
+                    <label for="surname">Last Name:</label>
+
+                    <input type="text" id="surname" autocomplete="off" th:field="*{lastName}"/>
+                    <br/>
+                </div>
+            </div>
+            <br/>
+            <div class="konu">
+
+             <label for="subject">Topic:</label>
+                <select id="subject" required th:field="*{commentTopic.id}">
+                    <option value="" selected hidden>
+                        Please Select Topic ...
+                    </option>
+                    <option th:each="commentTopic : ${commentTopics}" th:value="${commentTopic.id}"
+                            th:text="${commentTopic.name}"></option>
+                </select>
+            </div>
+            <br/>
+
+            <textarea required name="message" id="message" cols="42" rows="5" th:field="*{comment}">Mesaj: </textarea>
+            <br/>
+
+            <br/>
+
+            <div class="kayittusu">
+             <button type="submit">Save</button>
+            </div>
+            <div class="resettusu">
+                &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                &nbsp; &nbsp; &nbsp; &nbsp;<button type="reset">Clean</button>
+            </div>
+
+
+
+        </div>
+    </div>
+</form>
+
+<div th:if="${status == 'success' || status == 'fail'}" id="popup" class="overlay">
+    <div th:class="${status == 'success'} ? 'popup success' : 'popup fail'">
+        <div th:if="${status} == 'success'">
+            <h2 class="success">Thanks</h2>
+            <a class="close" href="/index">&times;</a>
+            <div class="content">
+                Registration was successfully received.
+            </div>
+        </div>
+        <div th:if="${status} == 'fail'">
+            <h2 class="fail">Sorry</h2>
+            <div class="content">
+                <a class="close" href="#">&times;</a>
+                The record could not be created.
+                Try again.
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

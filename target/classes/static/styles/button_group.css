@@ -1,0 +1,14 @@
+.button_group {
+    overflow: hidden;
+    display: table;
+    width: 40%;
+
+}
+
+.button_group div {
+    vertical-align:middle;
+    display: table-cell;
+    padding: 1px 16px;
+    transition: 0.3s;
+}
+

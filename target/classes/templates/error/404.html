@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/index.css" />
+    <title data-th-text="#{404.page.title}"></title>
+    <style>
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="contanier">
+    <div class="form">
+        <div>
+            <label data-th-text="#{404.page.title}"></label>
+
+            <a class="button" th:href="@{/index}">
+                <label data-th-text="#{404.page.index_btn_text}"></label>
+            </a>
+        </div>
+
+        <div class="logo">
+            <img src="images/okan_logo.png" alt="" width="210px" height="70px" />
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Users</title>
+    <!--<link th:href="@{/styles/main.css}" rel="stylesheet" />-->
+    <!-- <link th:href="@{/webjars/bootstraps/css/bootstraps.min.css}" rel="stylesheet" />-->
+    <!-- CSS only -->
+
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="styles/header.css" rel="stylesheet">
+    <link href="styles/button_group.css" rel="stylesheet">
+</head>
+<body>
+<div class="container-fluid text-center">
+<!-- <div> <h2>Manage Users</h2> </div>
+    <div class="m-2">
+        <a class="h3" th:href="@{/users-new}">Add New User</a>
+    </div>-->
+
+    <div class="tab">
+        <div class="tablinks">
+            <a th:href="@{/comments}">Comments</a>
+        </div>
+        <div class="tablinks" sec:authorize="hasAnyAuthority('ROOT', 'ADMIN')">
+            <a th:href="@{/comment-topics}">Comment Topics</a>
+        </div>
+        <div class="tablinks" sec:authorize="hasAnyAuthority('ROOT')">
+            <a th:href="@{/locations}">Locations</a>
+        </div>
+        <div class="tablinks active" sec:authorize="hasAnyAuthority('ROOT', 'ADMIN')">
+            <a th:href="@{/users}">Users</a>
+        </div>
+        <div class="tablinks" sec:authorize="hasAnyAuthority('ROOT', 'ADMIN')">
+            <a th:href="@{/new-user}">New User</a>
+        </div>
+        <div class="tablinks">
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="Sign out"/>
+            </form>
+        </div>
+    </div>
+
+    <div th:if="${message}" class="alert alert-success">
+        [[${message}]]
+    </div>
+
+  <div>
+     <table class="table table-bordered">
+       <thead class="thead-dark">
+         <tr>
+           <th>ID</th>
+           <th>E-mail</th>
+           <th>Name</th>
+           <th>Last Name </th>
+             <th>Role</th>
+           <th></th>
+         </tr>
+       </thead>
+         <tbody>
+         <th:block th:each="user : ${users}">
+           <tr>
+               <td>[[${user.id}]]</td>
+               <td>[[${user.email}]]</td>
+               <td>[[${user.firstName}]]</td>
+               <td>[[${user.lastName}]]</td>
+               <td>[[${user.Role}]]</td>
+               <td>
+                   <div class="button_group">
+                       <div>
+                           <form th:action="@{/user-edit/__${user.id}__}"
+                                 method="get">
+                               <button class="btn btn-primary" type="submit">Edit</button>
+                           </form>
+                       </div>
+                       <div>
+                           <form th:action="@{/user/delete(id=${user.id})}" method="post">
+                               <button class="btn btn-primary" type="submit">Delete</button>
+                           </form>
+                       </div>
+                   </div>
+               </td>
+           </tr>
+         </th:block>
+         </tbody>
+     </table>
+  </div>
+</div>
+</body>
+</html>
